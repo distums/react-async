@@ -2,6 +2,25 @@ const { React, ReactDOM } = window;
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
+const jsonPromises = urls.map(async url => {
+  const response = await fetch(url);
+  return response.json();
+});
+
+async function series() {
+  await wait(500); // Wait 500ms…
+  await wait(500); // …then wait another 500ms.
+  return "done!";
+}
+
+async function parallel() {
+  const wait1 = wait(500); // Start a 500ms timer asynchronously…
+  const wait2 = wait(500); // …meaning this timer happens in parallel.
+  await wait1; // Wait 500ms for the first timer…
+  await wait2; // …by which time this timer has already finished.
+  return "done!";
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props);
